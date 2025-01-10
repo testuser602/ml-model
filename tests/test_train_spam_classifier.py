@@ -3,10 +3,10 @@ import pickle
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import CountVectorizer
 
+
 def test_train_script():
     # Run the training script
     os.system("python train_spam_classifier.py")
-    
     # Check if the model and vectorizer files are created
     assert os.path.exists("spam_classifier.pkl"), "Model file not created."
     assert os.path.exists("vectorizer.pkl"), "Vectorizer file not created."

@@ -1,5 +1,5 @@
 import pickle
-import numpy as np
+
 
 def test_predict_script():
     # Load the model and vectorizer
