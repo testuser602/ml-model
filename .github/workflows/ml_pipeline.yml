@@ -9,66 +9,43 @@ on:
       - main
 
 jobs:
-  lint:
-    name: Linting
+  lint-test-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-      
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      
-      - name: Lint code
-        run: flake8 main.py test_main.py
+    # Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-  test:
-    name: Testing
-    runs-on: ubuntu-latest
+    # Set up Python
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-      
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      
-      - name: Run tests
-        run: pytest test_main.py
+    # Install dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-  deploy:
-    name: Deploy Model
-    runs-on: ubuntu-latest
+    # Linting Stage
+    - name: Run Flake8 Linting
+      run: |
+        pip install flake8
+        flake8 --ignore=E501,E402 . # Ignores long lines and imports outside the top of the file
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-      
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      
-      - name: Deploy Model
-        run: |
-          echo "Model deployed!"  # Replace this with your deployment script
+    # Unit Testing Stage
+    - name: Run Unit Tests
+      run: |
+        pytest
+
+    # Train Model
+    - name: Train and Save Model
+      run: |
+        python train_model.py
+
+    # Validate Saved Model (Prediction Test)
+    - name: Load and Predict Using Saved Model
+      run: |
+        python predict_model.py
