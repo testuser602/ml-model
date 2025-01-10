@@ -2,3 +2,4 @@ scikit-learn
 pytest
 flake8
 numpy
+pandas

@@ -1,51 +1,48 @@
-name: ML Pipeline
+name: Spam Classifier Pipeline
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  lint-test-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout the code
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Set up Python
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.9'
 
-    # Install dependencies
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # Linting Stage
-    - name: Run Flake8 Linting
+    - name: Run linting
       run: |
         pip install flake8
-        flake8 --ignore=E501,E402 . # Ignores long lines and imports outside the top of the file
+        flake8 --ignore=E501,E402 .
 
-    # Train Model
-    - name: Train and Save Model
+    - name: Train the model
       run: |
-        python train_model.py
+        python train_spam_classifier.py
 
-    # Validate Saved Model (Prediction Test)
-    - name: Load and Predict Using Saved Model
+    - name: Validate predictions
       run: |
-        python predict_model.py
+        python predict_spam.py
 
-    # Unit Testing Stage
-    - name: Run Unit Tests
+    - name: Save artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: spam-model
+        path: |
+          spam_classifier.pkl
+          vectorizer.pkl
+    
+    - name: Run unit tests
       run: |
-        pytest
+          pytest
