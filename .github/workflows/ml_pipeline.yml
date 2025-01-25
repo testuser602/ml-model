@@ -35,7 +35,7 @@ jobs:
       run: |
         python predict_spam.py
 
-    - name: Save artifacts
+    - name: Save artifacts ( deployment )
       uses: actions/upload-artifact@v3
       with:
         name: spam-model
