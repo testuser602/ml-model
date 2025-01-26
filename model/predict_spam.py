@@ -16,6 +16,6 @@ def predict_spam(message):
 
 
 # Example usage
-new_message = "Congratulations! You've won a $1,000 Walmart gift card. Go to http://spam.com to claim now."
+new_message = "Once in a blue moon hi"
 print(f"Message: {new_message}")
 print(f"Prediction: {predict_spam(new_message)}")
