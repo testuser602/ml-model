@@ -38,6 +38,11 @@ def train_and_log_model(C_value, max_iter):
         y_pred = model.predict(X_test_vectorized)
         accuracy = accuracy_score(y_test, y_pred)
 
+
+        # Save the model and vectorizer
+        with open("spam_classifier.pkl", "wb") as model_file:
+            pickle.dump(model, model_file)
+
         # Log metrics
         mlflow.log_metric("accuracy", accuracy)
 
