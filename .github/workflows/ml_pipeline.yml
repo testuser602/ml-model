@@ -37,7 +37,7 @@ jobs:
 
     - name: Validate predictions
       run: |
-        python predict_spam.py
+        python model/predict_spam.py
 
     - name: Save artifacts with versioning
       run: |
