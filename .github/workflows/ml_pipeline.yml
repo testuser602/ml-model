@@ -33,7 +33,7 @@ jobs:
         pip install mlflow
           
         # Run training script with MLflow logging enabled
-        python train_spam_classifier_ml_flow.py
+        python model/train_spam_classifier_ml_flow.py
 
     - name: Validate predictions
       run: |
