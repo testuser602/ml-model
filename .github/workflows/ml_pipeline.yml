@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - dvc-versioning
+      - feature/m2
 
 jobs:
   build:
@@ -37,10 +37,13 @@ jobs:
       run: |
         pip install flake8
         flake8 --ignore=E501,E402 .
-
-    - name: Train the model
+    
+    - name: Train the model with MLflow tracking
       run: |
-        python model/train_spam_classifier.py
+        pip install mlflow
+          
+        # Run training script with MLflow logging enabled
+        python model/train_spam_classifier_ml_flow.py
 
     - name: Validate predictions
       run: |
