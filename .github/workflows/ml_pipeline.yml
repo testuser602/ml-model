@@ -55,6 +55,13 @@ jobs:
       run: |
           # Install AWS CLI
           pip install awscli --upgrade
+          # Ensure the bucket name is correctly used
+          BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}
+
+          if [ -z "$BUCKET_NAME" ]; then
+            echo "Error: S3 bucket name is empty. Check your secrets configuration."
+            exit 1
+          fi
   
           # Upload artifacts to S3
           aws s3 cp artifacts s3://${{ secrets.S3_BUCKET_NAME }}/models/${MODEL_VERSION}/ --recursive
