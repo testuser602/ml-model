@@ -29,11 +29,11 @@ jobs:
 
     - name: Train the model
       run: |
-        python train_spam_classifier.py
+        python model/train_spam_classifier.py
 
     - name: Validate predictions
       run: |
-        python predict_spam.py
+        python model/predict_spam.py
 
     - name: Save artifacts with versioning
       run: |
