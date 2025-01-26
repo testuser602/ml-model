@@ -22,6 +22,7 @@ vectorizer = CountVectorizer()
 X_train_vectorized = vectorizer.fit_transform(X_train)
 X_test_vectorized = vectorizer.transform(X_test)
 
+
 # Define a function to train and log the model
 def train_and_log_model(C_value, max_iter):
     with mlflow.start_run():
@@ -45,6 +46,7 @@ def train_and_log_model(C_value, max_iter):
 
         # Print results
         print(f"Run with C={C_value}, max_iter={max_iter} -> Accuracy: {accuracy * 100:.2f}%")
+
 
 # Run experiments with different hyperparameters
 hyperparameters = [
