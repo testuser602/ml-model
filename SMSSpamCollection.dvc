@@ -1,0 +1,5 @@
+outs:
+- md5: 4d4683509ca18726910e2da529231ac1
+  size: 483481
+  hash: md5
+  path: SMSSpamCollection
