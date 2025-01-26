@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score
 import pickle
 
 # Load dataset
-df = pd.read_csv("SMSSpamCollection", sep="\t", names=["label", "message"])
+df = pd.read_csv("./data/SMSSpamCollection", sep="\t", names=["label", "message"])
 
 # Convert labels to binary (spam = 1, ham = 0)
 df['label'] = df['label'].map({'ham': 0, 'spam': 1})
