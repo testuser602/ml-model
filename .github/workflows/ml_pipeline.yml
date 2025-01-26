@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - hyperparameter-tuning
 
 jobs:
   build:
@@ -29,7 +30,7 @@ jobs:
 
     - name: Train the model
       run: |
-        python model/train_spam_classifier.py
+        python model/train_spam_classifier_hyperparameter.py
 
     - name: Validate predictions
       run: |
