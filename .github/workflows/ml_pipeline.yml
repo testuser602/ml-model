@@ -30,6 +30,13 @@ jobs:
     - name: Train the model
       run: |
         python train_spam_classifier.py
+    
+    - name: Train the model with MLflow tracking
+      run: |
+        pip install mlflow
+          
+        # Run training script with MLflow logging enabled
+        python train_spam_classifier_ml_flow.py
 
     - name: Validate predictions
       run: |
