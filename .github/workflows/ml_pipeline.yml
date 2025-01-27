@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - hyperparameter-tuning
 
 jobs:
   build:
@@ -29,19 +30,37 @@ jobs:
 
     - name: Train the model
       run: |
-        python train_spam_classifier.py
+        python train_spam_classifier_hyperparameter.py
 
     - name: Validate predictions
       run: |
         python predict_spam.py
 
-    - name: Save artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: spam-model
-        path: |
-          spam_classifier.pkl
-          vectorizer.pkl
+    - name: Save artifacts with versioning
+      run: |
+          # Create a version using timestamp and commit hash
+          TIMESTAMP=$(date +'%Y%m%d%H%M%S')
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          MODEL_VERSION="spam-model-${TIMESTAMP}-${COMMIT_HASH}"
+  
+          # Create an artifacts directory and prepare files
+          mkdir -p artifacts
+          cp spam_classifier.pkl artifacts/spam_classifier_${MODEL_VERSION}.pkl
+          cp vectorizer.pkl artifacts/vectorizer_${MODEL_VERSION}.pkl
+  
+    - name: Upload to AWS S3
+      env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+      run: |
+          # Install AWS CLI
+          pip install awscli --upgrade
+  
+          # Upload artifacts to S3
+          aws s3 cp artifacts s3://${{ secrets.S3_BUCKET_NAME }}/models/${MODEL_VERSION}/ --recursive
+  
+          echo "Artifacts uploaded to S3 at: s3://${{ secrets.S3_BUCKET_NAME }}/models/${MODEL_VERSION}/"
     
     - name: Run unit tests
       run: |
