@@ -30,11 +30,11 @@ jobs:
 
     - name: Train the model
       run: |
-        python model/train_spam_classifier_hyperparameter.py
+        python train_spam_classifier_hyperparameter.py
 
     - name: Validate predictions
       run: |
-        python model/predict_spam.py
+        python predict_spam.py
 
     - name: Save artifacts with versioning
       run: |
